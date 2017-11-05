@@ -29,7 +29,15 @@ void IMU_lib::beginAccel(LSM303* accel) {
 	lsm303_ctrl2 |= _BV(3);
 	lsm303_ctrl2 &= ~(_BV(5) | _BV(4));
 	_accel->writeAccReg(LSM303::CTRL2, lsm303_ctrl2);
-	
+  
+	// Adafruit Adafruit 10-DOF breakout board
+	// 4 g scale, high resolution: xx01 1xxx
+	/*
+	byte lsm303_ctrl_reg4_a = _accel->readReg(LSM303::CTRL_REG4_A);
+	lsm303_ctrl_reg4_a |= _BV(4) | _BV(3);
+	lsm303_ctrl_reg4_a &= ~(_BV(5));
+	_accel->writeAccReg(LSM303::CTRL_REG4_A, lsm303_ctrl_reg4_a); 
+    */
 	Serial.println("IMU_lib accel 4g");
 }
 
@@ -92,10 +100,10 @@ int* IMU_lib::Read_Accel() {
 	int a_z = data[2] - data_offset[2];
 	
 	//Low Pass Filter
-	float alpha = 0.75;
-    accel_data[0] = (alpha * a_x) + ((1 - alpha) * accel_data[0]);
-    accel_data[1] = (alpha * a_y) + ((1 - alpha) * accel_data[1]);
-    accel_data[2] = (alpha * a_z) + ((1 - alpha) * accel_data[2]);
+	float alpha = 0.98;
+    accel_data[0] = accel_data[0] * alpha + (a_x * (1.0 - alpha));
+    accel_data[1] = accel_data[1] * alpha + (a_y * (1.0 - alpha));
+    accel_data[2] = accel_data[2] * alpha + (a_z * (1.0 - alpha));
   
 	return accel_data;
 }

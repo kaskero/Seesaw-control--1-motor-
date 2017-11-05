@@ -26,6 +26,7 @@ float CF_lib::Compute_Pitch(int* accel, int gyro_y, int data_noise) {
 	int accel_z = *(accel+2);
 
 	float dt = (micros() - timer) / 1000000.0f;
+	timer = micros();
 	if(gyro_y > data_noise || gyro_y < -data_noise) {
 		// Trapezoidal rule for integrating angular velocity
 		// 17.50mdps/digit is L3G20H gyro's sensitivity for 500 dps scale
@@ -34,16 +35,15 @@ float CF_lib::Compute_Pitch(int* accel, int gyro_y, int data_noise) {
 		pitchGyro += rotAng;
 		prev_gyro_y = gyro_y;    
 	}
-	timer = micros();
-	
+
 	long squaresum = (long)square(accel_y) + (long)square(accel_z);
 	float pitchAccel = -atan(accel_x/sqrt(squaresum))*RAD_TO_DEG;
- 	
+  
+  	//Serial.print("pitchAccel: "); Serial.print(pitchAccel,2); 
+	//Serial.print(" pitchGyro: "); Serial.print(pitchGyro,2); 
+	
+	float compCoeff = 0.98;
 	pitch = compCoeff*pitch + (1.0f-compCoeff)*pitchAccel;
-
-  	//Serial.print(pitch,2); 
-	//Serial.print(" "); Serial.print(pitchAccel,2); 
-	//Serial.print(" "); Serial.println(pitchGyro,2);
 	
 	return pitch;
 }

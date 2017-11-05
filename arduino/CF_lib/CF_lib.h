@@ -16,7 +16,6 @@ class CF_lib {
 		float Compute_Pitch(int* accel, int gyro_y, int data_noise);
 	
 	private:
-		float compCoeff = 0.98;
 		int prev_gyro_y = 0;
 		float pitch;
 		float pitchGyro;
