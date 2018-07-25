@@ -1,6 +1,6 @@
 3D & PCB FILES
 
-Seesaw control with 1 motor by Aarón Brazaola & Aritz Ugarte is licensed under a Creative Commons Attribution 4.0 Internacional License.
+Seesaw-control--1-motor- by Aarón Brazaola & Aritz Ugarte is licensed under a Creative Commons Attribution 4.0 Internacional License.
 
 ARDUINO CODE
 
